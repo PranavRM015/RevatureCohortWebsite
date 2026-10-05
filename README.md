@@ -1,8 +1,8 @@
-# Revature Cohort Website MVP
+# Revature Cohort Website
 
 ## Overview
 
-The MVP is a site where our cohort can log in w/ Discord, ask questions about class notes and get answers that cite the actual note, and look back at old coding challenges. Right now our communication is on Discord and our notes live in our trainer's GitHub, so everything is spread out. This puts it in one place and gives me practice w/ the stack we're learning.
+The current MVP is a site where our cohort can log in w/ Discord, ask questions about class notes and get answers that cite the actual note, and look back at old coding challenges. Right now our communication is on Discord and our notes live in our trainer's GitHub, so everything is spread out. This puts it in one place and gives me practice w/ the stack we're learning.
 
 Our cohort is splitting into a React track and an Angular track, so the site has to know which track you're in and answer from that track's notes.
 
@@ -30,6 +30,7 @@ Why this setup:
 - `MapFallbackToFile("index.html")` sends Angular routes to the SPA instead of 404ing.
 - Azure SQL has a native vector type, so I can probably keep the embeddings in the same DB instead of adding a separate vector store.
 - Secrets (Discord client secret, connection string, LLM key) go in user-secrets locally and App Service settings in prod. Nothing gets committed.
+- Please note that cloud hosting and LLM / embeddings will be dealt with after the conclusion of this MVP.
 
 ## Roles and Tracks
 
@@ -38,7 +39,7 @@ There are three roles and two tracks. Login is Discord only, and you have to be 
 | Role | Who | Can do |
 | --- | --- | --- |
 | Trainee | Everyone in the cohort | Ask questions, view challenges, view profiles |
-| Trainer | Our trainer | Everything a trainee can + add coding challenges |
+| Trainer | Our trainer | Everything a trainee can do |
 | Admin | Me | Everything + manage users, roles, and re-run note ingestion |
 
 Track is React or Angular. I'm planning to read it off your Discord role when you log in, so nobody has to set it manually. Your track decides which notes the Q&A answers from.
