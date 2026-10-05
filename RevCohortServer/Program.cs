@@ -138,9 +138,7 @@ app.MapDelete("/me", async (string confirm, ClaimsPrincipal principal, CohortCon
 
 
 client.Log += msg => { Console.WriteLine(msg); return Task.CompletedTask; };
-
 ulong GuildId = ulong.Parse(Environment.GetEnvironmentVariable("SERVER_ID") ?? throw new InvalidOperationException("SERVER_ID not set"));
-
 client.Ready += async () =>
 {
     var cmd = new SlashCommandBuilder()

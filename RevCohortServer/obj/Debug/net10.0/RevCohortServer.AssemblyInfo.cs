@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RevCohortServer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cabb2fd008862ebe38a2a80b5c0d0afbabe31e69")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+21b3f7987c3fbcbdb8e7cc3834ce8b7c04cb86d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("RevCohortServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RevCohortServer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

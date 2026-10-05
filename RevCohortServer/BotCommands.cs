@@ -47,23 +47,18 @@ namespace BotCommands
                 return;
             }
             DateTime registeredAt = DateTime.UtcNow;
-            
             string profileColor = "#000000";
             int trackVal = track == 0 ? 0 : 1;
-  
             User user_c = new User(user.Id, firstName, lastName, profileColor, role, isAdmin, (Track)trackVal, registeredAt, "", "");
 
             using var db = new CohortContext();
-
             if (await db.Users.FindAsync(user_c.DiscordId) != null)
             {
                 await command.RespondAsync("You are already registered.", ephemeral: true);
                 return;
             }
-
             db.Users.Add(user_c);
             await db.SaveChangesAsync();
-
             await command.RespondAsync($"Registered {user_c.Username}.", ephemeral: true);
         }
 

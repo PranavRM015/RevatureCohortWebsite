@@ -28,9 +28,9 @@ Why this setup:
 - Same origin for frontend and API, so no CORS setup and I can use HttpOnly cookies instead of storing JWTs in the browser.
 - In local dev I run `ng serve` w/ a proxy that forwards `/api/*` to the API, so I still get hot reload.
 - `MapFallbackToFile("index.html")` sends Angular routes to the SPA instead of 404ing.
-- Azure SQL has a native vector type, so I can probably keep the embeddings in the same DB instead of adding a separate vector store.
+- Azure SQL has a native vector type, so I can probably keep the embeddings in the same DB instead of adding a separate vector store. 
 - Secrets (Discord client secret, connection string, LLM key) go in user-secrets locally and App Service settings in prod. Nothing gets committed.
-- Please note that cloud hosting and LLM / embeddings will be dealt with after the conclusion of this MVP.
+- Please note that cloud hosting, Azure SQL LLM / embeddings will be dealt with after the conclusion of this MVP.
 
 ## Roles and Tracks
 
@@ -42,7 +42,7 @@ There are three roles and two tracks. Login is Discord only, and you have to be 
 | Trainer | Our trainer | Everything a trainee can do |
 | Admin | Me | Everything + manage users, roles, and re-run note ingestion |
 
-Track is React or Angular. I'm planning to read it off your Discord role when you log in, so nobody has to set it manually. Your track decides which notes the Q&A answers from.
+Track is React or Angular. I'm planning to read it off your Discord role when you log in, so nobody has to set it manually. Your track decides which notes the Q&A answers from. Users can also set their location to the location they will be deployed.
 
 Why no passwords: Discord login already restricts the site to cohort members. Adding passwords would mean hashing, password resets (which needs email), lockout, and linking accounts if someone uses both. Not worth it for the MVP.
 
@@ -50,13 +50,13 @@ Why no passwords: Discord login already restricts the site to cohort members. Ad
 
 **1. Study from the Claude document**
 
-As a trainee, I want one link to the cohort's Claude document so that I can navigate the topics and use the AI-generated memorization games in it to review.
+As a trainee, I want to access all the information from the cohort's syllabus so that I can navigate the topics and test myself on what was taught through multiple choice questions.
 
 Acceptance Criteria:
 
-- The site includes a link to the Claude document: [link to the Claude document - to be added].
+- The site includes information about each topic covered to this date.
 - The link is only visible to logged-in cohort members.
-- This is mandatory for the MVP. A built-in Q&A is out of scope for the time we have.
+- This is mandatory for the MVP. Practice QCs are out of scope for the time being.
 
 **2. View cohort profiles and portfolios**
 
@@ -101,12 +101,10 @@ Profile color: Discord gives us `accent_color` from the banner, but it's null fo
 - Finalized details: locked doc, trainer's OK, Discord app registered, repo set up
 - Web API project
 - EF Core entities and the first migration
-- GitHub Action that builds and tests on every PR
 - Angular app w/ routing, calling the real API through the dev proxy
 - Discord login w/ the server check
 - Profiles w/ profile colors
 - Deployment: Angular build into wwwroot, App Service + Azure SQL, Discord redirect URI for prod
-- Link to the Claude document (mandatory)
 - Portfolio access: profile page showing each member's profile link
 
 ## Team Workflow
