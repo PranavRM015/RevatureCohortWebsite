@@ -41,7 +41,11 @@ namespace Users
         [Url]
         [EnumDataType(typeof(Role))]
         public string ProfileLink { get; set; }
-        public User(ulong discordId, string firstName, string lastName, string profileColor, Role role, bool isAdmin, Track track, DateTime registeredAt, string profileLink)
+        [Required]
+        public string Location { get; set; }
+        public bool isAlias { get; set; }
+        public string alias { get; set; }
+        public User(ulong discordId, string firstName, string lastName, string profileColor, Role role, bool isAdmin, Track track, DateTime registeredAt, string location, string profileLink)
         {
             this.DiscordId = discordId;
             this.Username = $"{firstName} {lastName}";
@@ -52,7 +56,10 @@ namespace Users
             this.IsAdmin = isAdmin;
             this.Track = track;
             this.RegisteredAt = registeredAt;
+            this.Location = location;
             this.ProfileLink = profileLink;
+            this.isAlias = false;
+            this.alias = "";
         }
     }
 }

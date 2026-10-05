@@ -175,6 +175,5 @@ C:\Revature\Training\25082026---.net-fullstack-AI-enabled-Developers\Revature Co
 C:\Revature\Training\25082026---.net-fullstack-AI-enabled-Developers\Revature Cohort Website\RevCohortServer\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Revature\Training\25082026---.net-fullstack-AI-enabled-Developers\Revature Cohort Website\RevCohortServer\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Revature\Training\25082026---.net-fullstack-AI-enabled-Developers\Revature Cohort Website\RevCohortServer\bin\Debug\net10.0\CsvHelper.dll
-C:\Revature\Training\25082026---.net-fullstack-AI-enabled-Developers\Revature Cohort Website\RevCohortServer\bin\Debug\net10.0\UserInformation.json
 C:\Revature\Training\25082026---.net-fullstack-AI-enabled-Developers\Revature Cohort Website\RevCohortServer\bin\Debug\net10.0\DSharpPlus.dll
 C:\Revature\Training\25082026---.net-fullstack-AI-enabled-Developers\Revature Cohort Website\RevCohortServer\bin\Debug\net10.0\DSharpPlus.SlashCommands.dll

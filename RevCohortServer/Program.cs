@@ -157,9 +157,22 @@ client.Ready += async () =>
         .WithName("login")
         .WithDescription("Get a login link for the cohort site");
 
+    var roleAssignmentCmd = new SlashCommandBuilder()
+        .WithName("role_assignment")
+        .WithDescription("Assign a role to a user")
+        .AddOption("user", ApplicationCommandOptionType.User, "The user to assign the role to", isRequired: true)
+        .AddOption("role", ApplicationCommandOptionType.String, "The role to assign", isRequired: true, choices: new[]
+        {
+            new ApplicationCommandOptionChoiceProperties { Name = "trainee", Value = "trainee" },
+            new ApplicationCommandOptionChoiceProperties { Name = "trainer", Value = "trainer" },
+            new ApplicationCommandOptionChoiceProperties { Name = "react", Value = "react" },
+            new ApplicationCommandOptionChoiceProperties { Name = "angular", Value = "angular" }
+        });
+
     await client.GetGuild(GuildId).CreateApplicationCommandAsync(cmd.Build());
     await client.GetGuild(GuildId).CreateApplicationCommandAsync(registerCmd.Build());
     await client.GetGuild(GuildId).CreateApplicationCommandAsync(loginCmd.Build());
+    await client.GetGuild(GuildId).CreateApplicationCommandAsync(roleAssignmentCmd.Build());
 };
 
 var bot = new BotCommand("bot", "Cohort bot commands");
@@ -172,6 +185,8 @@ client.SlashCommandExecuted += async command =>
         await bot.RegisterCommand(command);
     else if (command.Data.Name == "login")
         await bot.LoginCommand(command);
+    else if (command.Data.Name == "role_assignment")
+        await bot.roleAssignmentCommand(command);
 };
 
 var token = Environment.GetEnvironmentVariable("DISCORD_TOKEN")
