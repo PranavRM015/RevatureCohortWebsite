@@ -1,0 +1,6 @@
+@RevCohortServer_HostAddress = http://localhost:5214
+
+GET {{RevCohortServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

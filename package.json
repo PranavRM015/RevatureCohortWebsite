@@ -1,0 +1,13 @@
+{
+  "name": "revature-cohort-website",
+  "version": "1.0.0",
+  "description": "The MVP is a site where our cohort can log in w/ Discord, ask questions about class notes and get answers that cite the actual note, and look back at old coding challenges. Right now our communication is on Discord and our notes live in our trainer's GitHub, so everything is spread out. This puts it in one place and gives me practice w/ the stack we're learning.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
