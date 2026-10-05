@@ -1,0 +1,5 @@
+{
+  "/login": { "target": "http://localhost:5214", "secure": false },
+  "/me": { "target": "http://localhost:5214", "secure": false },
+  "/profiles": { "target": "http://localhost:5214", "secure": false }
+}

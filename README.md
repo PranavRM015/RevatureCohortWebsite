@@ -2,7 +2,7 @@
 
 ## Overview
 
-The current MVP is a site where our cohort can log in w/ Discord, ask questions about class notes and get answers that cite the actual note, and look back at old coding challenges. Right now our communication is on Discord and our notes live in our trainer's GitHub, so everything is spread out. This puts it in one place and gives me practice w/ the stack we're learning.
+The current MVP is a site where our cohort can log in w/ Discord and ask questions about class notes and get answers that cite the actual note. Right now our communication is on Discord and our notes live in our trainer's GitHub, so everything is spread out. This puts it in one place and gives me practice w/ the stack we're learning.
 
 Our cohort is splitting into a React track and an Angular track, so the site has to know which track you're in and answer from that track's notes.
 
@@ -38,7 +38,7 @@ There are three roles and two tracks. Login is Discord only, and you have to be 
 
 | Role | Who | Can do |
 | --- | --- | --- |
-| Trainee | Everyone in the cohort | Ask questions, view challenges, view profiles |
+| Trainee | Everyone in the cohort | Ask questions, view profiles |
 | Trainer | Our trainer | Everything a trainee can do |
 | Admin | Me | Everything + manage users, roles, and re-run note ingestion |
 
@@ -58,18 +58,7 @@ Acceptance Criteria:
 - The link is only visible to logged-in cohort members.
 - This is mandatory for the MVP. A built-in Q&A is out of scope for the time we have.
 
-**2. Review old coding challenges**
-
-As a trainee, I want to see previous coding challenges so that I can practice them again before interviews.
-
-Acceptance Criteria:
-
-- Only logged-in cohort members can view challenges.
-- Each challenge shows who posted it and when.
-- Challenges can be filtered by week and track.
-- Only trainers and admins can add or edit challenges.
-
-**3. View cohort profiles and portfolios**
+**2. View cohort profiles and portfolios**
 
 As a cohort member, I want to view everyone's profile and portfolio so that I know who's in the cohort, can reach out to them, and can see their work.
 
@@ -86,10 +75,7 @@ In the MVP:
 
 1. Discord login, gated to our cohort's server
 2. Profiles w/ unique colors and a place for everyone to reach each other's portfolios
-3. Coding challenge archive
-4. A link to the Claude document (mandatory)
-
-This is all we can do with the time we have.
+3. A link to the Claude document
 
 Not in the MVP:
 
@@ -98,6 +84,7 @@ Not in the MVP:
 - QC feedback and performance tracking. Dropped for now since that's Revature's evaluation data.
 - Chat moderation. Discord AutoMod already covers this.
 - Chat in general. That stays on Discord.
+- Azure hosting; this will be done via Render for the MVP.
 
 ## Data Model
 
@@ -118,7 +105,6 @@ Profile color: Discord gives us `accent_color` from the banner, but it's null fo
 - Angular app w/ routing, calling the real API through the dev proxy
 - Discord login w/ the server check
 - Profiles w/ profile colors
-- Coding challenge archive
 - Deployment: Angular build into wwwroot, App Service + Azure SQL, Discord redirect URI for prod
 - Link to the Claude document (mandatory)
 - Portfolio access: profile page showing each member's profile link

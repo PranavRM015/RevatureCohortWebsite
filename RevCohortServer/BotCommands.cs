@@ -48,13 +48,7 @@ namespace BotCommands
             }
             DateTime registeredAt = DateTime.UtcNow;
             
-            var colorRole = user.Roles
-                .Where(r => r.Color.RawValue != 0)
-                .OrderByDescending(r => r.Position)
-                .FirstOrDefault();
-
-            uint profileColorValue = colorRole?.Color.RawValue ?? 0;
-            string profileColor = "#" + profileColorValue.ToString("X6");
+            string profileColor = "#000000";
             int trackVal = track == 0 ? 0 : 1;
   
             User user_c = new User(user.Id, firstName, lastName, profileColor, role, isAdmin, (Track)trackVal, registeredAt, "");

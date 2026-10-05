@@ -1,0 +1,472 @@
+[
+  {
+    "slug": "csharp-fundamentals",
+    "name": "C# Fundamentals",
+    "sections": [
+      {
+        "heading": "Types and variables",
+        "points": [
+          "Value types (`int`, `double`, `decimal`, `bool`, `char`, `struct`, `enum`) hold their data directly. Reference types (`string`, `class`, arrays, `object`) hold a reference to an object on the heap.",
+          "Use `decimal` for money. `double` is binary floating point and cannot represent many decimal fractions exactly, so rounding errors creep in.",
+          "A local variable must be definitely assigned before it is read, otherwise the compiler refuses to build.",
+          "`var` lets the compiler infer the type. The variable is still statically typed, it is not dynamic.",
+          "`string` is immutable: every 'change' creates a new string. Use `StringBuilder` when building text in a loop.",
+          "Nullable reference types (`string?`) and null operators `?.`, `??` and `??=` help you handle missing values safely."
+        ]
+      },
+      {
+        "heading": "Control flow and operators",
+        "points": [
+          "`if`/`else`, `switch` (statements and expressions), `for`, `foreach`, `while`, `do/while`, plus `break` and `continue`.",
+          "Integer division truncates (`7 / 2` is `3`), and `%` gives the remainder.",
+          "`==` compares values for value types and, for most reference types, references. `string` overloads `==` to compare content."
+        ]
+      },
+      {
+        "heading": "Methods",
+        "points": [
+          "A method has a return type, a name and parameters. `void` means no return value.",
+          "Overloading means the same method name with different parameter lists.",
+          "`ref` and `out` pass arguments by reference. `out` must be assigned by the method. Optional and named arguments make calls shorter and clearer.",
+          "Expression-bodied members (`int Double(int x) => x * 2;`) are a compact form for one-line methods."
+        ]
+      },
+      {
+        "heading": "Object-oriented programming",
+        "points": [
+          "Encapsulation: keep fields `private` and expose behaviour through methods and properties.",
+          "Inheritance: a class derives from one base class with `:`. Use `virtual` in the base and `override` in the derived class, and `base` to call the parent.",
+          "Polymorphism: a base-type reference can hold a derived object, and the overridden method that runs is chosen at runtime.",
+          "Abstraction: `abstract` classes cannot be instantiated and may contain unimplemented members. Interfaces define a contract that a class can implement, and a class can implement many interfaces.",
+          "`new` allocates an object on the heap and runs its constructor. Constructors have the class name and no return type.",
+          "Access modifiers: `public`, `private`, `protected`, `internal`. Properties use `{ get; set; }`, and `init` allows setting only during construction."
+        ]
+      },
+      {
+        "heading": "Exceptions and resources",
+        "points": [
+          "`try`/`catch`/`finally`: catch the most specific exception first. `finally` always runs.",
+          "Rethrow with `throw;` to preserve the stack trace. `throw ex;` resets it.",
+          "Objects that hold resources implement `IDisposable`. Wrap them in a `using` statement so they are released even if an exception occurs.",
+          "Custom exceptions derive from `Exception`."
+        ]
+      },
+      {
+        "heading": "Memory basics",
+        "points": [
+          "Value types usually live on the stack (or inline in their container), reference-type objects live on the heap.",
+          "The garbage collector frees heap objects that are no longer reachable. You do not free memory yourself.",
+          "Boxing wraps a value type in an object on the heap, and unboxing extracts it. It costs allocations, so avoid it in hot code."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "collections-linq",
+    "name": "Collections & LINQ",
+    "sections": [
+      {
+        "heading": "Choosing a collection",
+        "points": [
+          "Array: fixed size, fastest indexed access.",
+          "`List<T>`: resizable, indexed access, the default choice.",
+          "`Dictionary<TKey, TValue>`: look up a value by key in roughly constant time. Use `TryGetValue` to avoid `KeyNotFoundException`.",
+          "`HashSet<T>`: stores unique items and checks membership quickly.",
+          "`Queue<T>`: first in, first out. `Stack<T>`: last in, first out.",
+          "Generic collections are type safe and avoid boxing, which is why they replaced `ArrayList` and `Hashtable`."
+        ]
+      },
+      {
+        "heading": "LINQ basics",
+        "points": [
+          "LINQ queries any `IEnumerable<T>`. It has query syntax (`from x in xs where ... select ...`) and method syntax (`xs.Where(...).Select(...)`).",
+          "Filtering and projection: `Where`, `Select`, `Distinct`, `Take`, `Skip`.",
+          "Ordering: `OrderBy`, `OrderByDescending`, `ThenBy`.",
+          "Grouping and joining: `GroupBy`, `Join`.",
+          "Aggregation: `Count`, `Sum`, `Average`, `Min`, `Max`. Tests: `Any`, `All`.",
+          "`First` and `Single` throw when there is no match. `FirstOrDefault` and `SingleOrDefault` return the default value instead."
+        ]
+      },
+      {
+        "heading": "Deferred execution",
+        "points": [
+          "Most LINQ operators do not run when you write them. The query runs when you enumerate it, for example with `foreach`, `ToList()` or `Count()`.",
+          "Enumerating the same query twice runs it twice, and it sees the data as it is at that moment.",
+          "`IQueryable<T>` (used by EF Core) turns the query into SQL, while `IEnumerable<T>` runs it in memory. Calling `ToList()` too early pulls all rows into memory."
+        ]
+      },
+      {
+        "heading": "Lambdas and delegates",
+        "points": [
+          "A lambda like `x => x > 5` is a short anonymous function.",
+          "`Func<T, TResult>` returns a value, `Action<T>` returns nothing, and `Predicate<T>` returns `bool`.",
+          "Modifying a collection while looping over it with `foreach` throws an `InvalidOperationException`."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "advanced-csharp",
+    "name": "Advanced C#",
+    "sections": [
+      {
+        "heading": "async and await",
+        "points": [
+          "`Task` and `Task<T>` represent work that completes later. `await` pauses the method without blocking the thread.",
+          "Use `async` all the way up. Blocking with `.Result` or `.Wait()` can deadlock.",
+          "`async void` is only for event handlers, because the caller cannot await it or catch its exceptions.",
+          "`Task.WhenAll` runs tasks concurrently and waits for all of them. Pass a `CancellationToken` so long operations can be cancelled."
+        ]
+      },
+      {
+        "heading": "Generics",
+        "points": [
+          "Generics let you write one class or method for many types while keeping type safety, for example `List<T>`.",
+          "Constraints restrict what `T` can be: `where T : class`, `where T : new()`, `where T : IComparable<T>`."
+        ]
+      },
+      {
+        "heading": "Delegates and events",
+        "points": [
+          "A delegate is a type-safe reference to a method. Delegates can be multicast, meaning several methods run when invoked.",
+          "An `event` is a delegate that outsiders can only subscribe to or unsubscribe from. They cannot invoke it. This is the observer pattern."
+        ]
+      },
+      {
+        "heading": "Modern language features",
+        "points": [
+          "`record` types give value-based equality and non-destructive copying with `with`.",
+          "Pattern matching (`is`, `switch` expressions) lets you test the shape and value of data concisely.",
+          "Tuples and deconstruction return several values without a custom class.",
+          "Extension methods add methods to existing types without changing them, and `yield return` builds lazy sequences."
+        ]
+      },
+      {
+        "heading": "Attributes and reflection",
+        "points": [
+          "Attributes attach metadata to code, such as `[Key]`, `[Required]` or `[HttpGet]`.",
+          "Reflection reads that metadata and type information at runtime. Frameworks like EF Core and ASP.NET use it heavily, at some performance cost."
+        ]
+      },
+      {
+        "heading": "Design principles",
+        "points": [
+          "SOLID: Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion.",
+          "Depend on abstractions (interfaces) and inject them, so code is easy to change and to test.",
+          "The garbage collector uses generations (0, 1, 2) so short-lived objects are collected cheaply. Use `IDisposable` and `using` for unmanaged resources."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "sql-ef-core",
+    "name": "SQL & EF Core",
+    "sections": [
+      {
+        "heading": "Relational basics",
+        "points": [
+          "Data lives in tables of rows and columns. A primary key uniquely identifies a row, and a foreign key points at a row in another table.",
+          "Normalization removes duplicated data by splitting it into related tables.",
+          "Constraints protect data: `NOT NULL`, `UNIQUE`, `CHECK`, `DEFAULT`, `PRIMARY KEY`, `FOREIGN KEY`."
+        ]
+      },
+      {
+        "heading": "Querying",
+        "points": [
+          "Logical order of a query: `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`.",
+          "`WHERE` filters rows before grouping, and `HAVING` filters groups after aggregation.",
+          "Joins: `INNER JOIN` keeps matches only, `LEFT JOIN` keeps every left row, `FULL JOIN` keeps everything.",
+          "Aggregates: `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`. `DISTINCT` removes duplicates, `TOP` limits rows.",
+          "Subqueries and CTEs (`WITH`) break complex queries into steps."
+        ]
+      },
+      {
+        "heading": "Changing data and structure",
+        "points": [
+          "`INSERT`, `UPDATE` and `DELETE` change rows. Always include a `WHERE` on `UPDATE` and `DELETE`.",
+          "`DELETE` removes chosen rows and can be rolled back, `TRUNCATE` empties a table quickly, and `DROP` removes the table itself.",
+          "Transactions follow ACID: Atomic, Consistent, Isolated, Durable.",
+          "Indexes speed up reads but slow writes. A table has one clustered index.",
+          "Views, stored procedures, functions and triggers are T-SQL objects stored in the database."
+        ]
+      },
+      {
+        "heading": "Entity Framework Core",
+        "points": [
+          "`DbContext` is your session with the database, and each `DbSet<T>` represents a table.",
+          "Code-first migrations: change your entity classes, run `dotnet ef migrations add Name`, then `dotnet ef database update`.",
+          "EF tracks changes to loaded entities. `SaveChangesAsync()` writes all pending inserts, updates and deletes in one transaction.",
+          "`Add`, `Remove` and `FindAsync` work with entities. `FindAsync` looks up by primary key.",
+          "`Include` loads related data in the same query (eager loading). Forgetting it leads to missing data or the N+1 query problem.",
+          "`AsNoTracking()` makes read-only queries faster.",
+          "Relationships are configured with navigation properties, data annotations or the Fluent API in `OnModelCreating`.",
+          "EF parameterizes queries, which protects against SQL injection."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "aspnet-core",
+    "name": "ASP.NET Core Fundamentals",
+    "sections": [
+      {
+        "heading": "Hosting and Program.cs",
+        "points": [
+          "`WebApplication.CreateBuilder(args)` creates the builder. Register services on `builder.Services`, call `builder.Build()`, configure the pipeline on `app`, then `app.Run()`.",
+          "Environments (`Development`, `Production`) change behaviour such as error pages and which settings load."
+        ]
+      },
+      {
+        "heading": "Middleware pipeline",
+        "points": [
+          "A request passes through middleware in the order they are registered. Each one can do work, call the next one, or short-circuit and respond.",
+          "Typical order: exception handling, HTTPS redirection, static files, routing, authentication, authorization, endpoints.",
+          "Authentication must come before authorization, because you must know who someone is before deciding what they may do."
+        ]
+      },
+      {
+        "heading": "Dependency injection",
+        "points": [
+          "Services are registered with a lifetime: Transient (new each time), Scoped (one per request) and Singleton (one for the whole app).",
+          "`AddDbContext` registers the context as Scoped. Do not inject a Scoped service into a Singleton.",
+          "Constructor injection is the normal way to receive services in controllers and services."
+        ]
+      },
+      {
+        "heading": "Controllers and minimal APIs",
+        "points": [
+          "Controllers use attributes: `[ApiController]`, `[Route]`, `[HttpGet]`, `[HttpPost]`. Minimal APIs use `app.MapGet(...)` and lambdas.",
+          "Model binding fills parameters from the route, query string, headers or body (`[FromBody]`).",
+          "Data annotations (`[Required]`, `[StringLength]`) validate input, and `[ApiController]` returns 400 automatically for invalid models.",
+          "Return helpers: `Ok`, `Created`, `NoContent`, `BadRequest`, `NotFound`, `Unauthorized`."
+        ]
+      },
+      {
+        "heading": "Configuration",
+        "points": [
+          "Settings come from `appsettings.json`, environment-specific files, environment variables and user-secrets. Later sources override earlier ones.",
+          "Keep secrets such as connection strings and API keys out of source control."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "api-design",
+    "name": "API Design & Patterns",
+    "sections": [
+      {
+        "heading": "REST principles",
+        "points": [
+          "Resources are nouns (`/users`, `/users/5`). The HTTP method is the verb.",
+          "`GET` reads and is safe. `POST` creates. `PUT` replaces and is idempotent. `PATCH` changes part of a resource. `DELETE` removes and is idempotent.",
+          "REST is stateless: every request carries what the server needs to handle it.",
+          "Status codes: 200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 500 Server Error."
+        ]
+      },
+      {
+        "heading": "DTOs and contracts",
+        "points": [
+          "Use Data Transfer Objects for requests and responses instead of exposing database entities directly.",
+          "DTOs stop over-posting (clients setting fields they should not) and keep the database shape private."
+        ]
+      },
+      {
+        "heading": "Practical API features",
+        "points": [
+          "Pagination, filtering and sorting through query parameters keep responses small.",
+          "Return errors in a consistent format, for example `ProblemDetails`.",
+          "Version your API so changes do not break existing clients.",
+          "Document it with OpenAPI/Swagger.",
+          "Rate limiting protects the API from abuse."
+        ]
+      },
+      {
+        "heading": "Layering and patterns",
+        "points": [
+          "Keep controllers thin: Controller, then Service (business rules), then Repository or DbContext (data access).",
+          "The Repository pattern hides data access behind an interface. Unit of Work groups changes into one save.",
+          "Dependency inversion plus injection makes each layer easy to test and replace."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "auth-security",
+    "name": "Authentication & Security",
+    "sections": [
+      {
+        "heading": "Authentication versus authorization",
+        "points": [
+          "Authentication answers 'who are you?'. Authorization answers 'what are you allowed to do?'.",
+          "401 means not authenticated. 403 means authenticated but not allowed."
+        ]
+      },
+      {
+        "heading": "Cookies and tokens",
+        "points": [
+          "Cookie authentication: after sign-in the server sets a signed, encrypted cookie and the browser sends it with each request. `HttpOnly` keeps JavaScript from reading it, `Secure` limits it to HTTPS, and `SameSite` limits cross-site sending.",
+          "A JWT has a header, payload and signature. It is signed so it cannot be tampered with, but the payload is only encoded, not secret.",
+          "Short-lived access tokens plus refresh tokens limit the damage if a token leaks.",
+          "One-time login links should use random, unguessable tokens that expire and can be used only once."
+        ]
+      },
+      {
+        "heading": "Access control in ASP.NET Core",
+        "points": [
+          "`[Authorize]` requires a signed-in user. `[Authorize(Roles = \"Admin\")]` requires a role, and policies express more complex rules.",
+          "Claims describe the user (id, role). Take the user identity from the cookie or token, never from request data the client controls."
+        ]
+      },
+      {
+        "heading": "Passwords and secrets",
+        "points": [
+          "Never store passwords in plain text. Hash them with a slow, salted algorithm such as bcrypt, PBKDF2 or Argon2. Hashing is one-way, encryption is not.",
+          "Do not commit secrets. Use user-secrets, environment variables or a secret store."
+        ]
+      },
+      {
+        "heading": "Common attacks and defences",
+        "points": [
+          "SQL injection: use parameterized queries or an ORM.",
+          "XSS (cross-site scripting): encode output, avoid `innerHTML` with untrusted data, and use a Content Security Policy.",
+          "CSRF: use anti-forgery tokens and `SameSite` cookies.",
+          "Always use HTTPS, give users and services the least privilege they need, and validate all input on the server.",
+          "OAuth2 lets a user grant an app limited access to an account (like Discord login) without sharing their password."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "ai-prompting",
+    "name": "AI & Prompting",
+    "sections": [
+      {
+        "heading": "How language models work",
+        "points": [
+          "A large language model predicts the next token from the text so far. It does not look facts up unless it is given tools or documents.",
+          "The context window is how much text the model can consider at once.",
+          "Models can hallucinate: produce confident but wrong answers. Output varies between runs, especially with a higher temperature."
+        ]
+      },
+      {
+        "heading": "Writing good prompts",
+        "points": [
+          "Be specific about the task, the audience, the format you want and the constraints.",
+          "Give context and source material, and ask it to cite or quote them.",
+          "Examples (few-shot prompting) show the model the pattern you want.",
+          "Ask for step-by-step reasoning on complex problems, and iterate: refine the prompt based on the output."
+        ]
+      },
+      {
+        "heading": "Using AI when coding",
+        "points": [
+          "AI is good for boilerplate, explanations, refactors and test ideas. You are still responsible for the result.",
+          "Review everything. Run the compiler and tests rather than trusting the code because it looks right.",
+          "Work in small steps and understand each change. Blindly accepting large generated code ('vibe coding') leaves you unable to debug it.",
+          "Never paste secrets, keys or private data into a prompt."
+        ]
+      },
+      {
+        "heading": "RAG and safety",
+        "points": [
+          "Retrieval-Augmented Generation finds relevant text chunks (often with embeddings and vector search) and gives them to the model so answers are grounded and can cite sources.",
+          "Prompt injection: text from documents or users can contain instructions. Treat retrieved content as data, not commands.",
+          "Consider bias, privacy, licensing and cost (tokens) when using AI in a product."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "testing",
+    "name": "Testing",
+    "sections": [
+      {
+        "heading": "Why test and what to test",
+        "points": [
+          "Tests catch regressions, document behaviour and let you refactor with confidence.",
+          "The testing pyramid: many fast unit tests, fewer integration tests, and a handful of end-to-end tests."
+        ]
+      },
+      {
+        "heading": "Unit tests with xUnit",
+        "points": [
+          "`[Fact]` marks a single test. `[Theory]` with `[InlineData]` runs the same test with several inputs.",
+          "Arrange, Act, Assert: set up, run the code under test, check the result.",
+          "Each test should check one behaviour, be independent of other tests and give the same result every run.",
+          "Cover the normal case, boundaries (0, 1, max), empty or null input and error cases. Use `Assert.Equal` and `Assert.Throws`."
+        ]
+      },
+      {
+        "heading": "Isolating dependencies",
+        "points": [
+          "Depend on interfaces so tests can substitute fakes. Mocking libraries (Moq, NSubstitute) create them.",
+          "A stub returns canned data, a mock also verifies it was called, and a fake is a simple working replacement such as an in-memory repository."
+        ]
+      },
+      {
+        "heading": "Integration, TDD and CI",
+        "points": [
+          "`WebApplicationFactory<T>` starts your API in memory so you can test real HTTP requests.",
+          "Test-driven development: write a failing test (red), make it pass (green), then clean up (refactor).",
+          "Code coverage shows what ran, not whether the tests are good.",
+          "Run tests automatically on every pull request with CI such as GitHub Actions."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "front-end",
+    "name": "Front-End Fundamentals",
+    "sections": [
+      {
+        "heading": "HTTP",
+        "points": [
+          "The browser sends a request (method, URL, headers, optional body) and the server returns a response (status code, headers, body).",
+          "HTTP is stateless. Cookies and tokens carry state between requests.",
+          "Useful headers: `Content-Type`, `Authorization`, `Cookie`, `Set-Cookie`, `Cache-Control`."
+        ]
+      },
+      {
+        "heading": "HTML",
+        "points": [
+          "Use semantic elements (`header`, `nav`, `main`, `section`, `article`, `footer`) so the page has meaning for browsers and screen readers.",
+          "Forms collect input. Every input needs a label, and images need `alt` text."
+        ]
+      },
+      {
+        "heading": "CSS",
+        "points": [
+          "Selectors choose elements. Specificity decides which rule wins: inline beats id, id beats class, class beats element.",
+          "The box model: content, padding, border, margin.",
+          "Flexbox lays out items in one dimension and Grid in two. Media queries make layouts responsive.",
+          "CSS custom properties (`--color`) let you reuse values."
+        ]
+      },
+      {
+        "heading": "JavaScript",
+        "points": [
+          "Prefer `const` and `let`. Use `===` to compare without type coercion.",
+          "Functions are values. A closure is a function that remembers the variables around it. Arrow functions do not have their own `this`.",
+          "Promises and `async`/`await` handle asynchronous work. The event loop runs callbacks after the current code finishes.",
+          "Array methods `map`, `filter` and `reduce`, plus destructuring and the spread operator, are used everywhere.",
+          "`JSON.stringify` and `JSON.parse` convert between objects and JSON text."
+        ]
+      },
+      {
+        "heading": "The DOM",
+        "points": [
+          "The DOM is the browser's tree of page elements. Find them with `querySelector`, change them with `textContent` and `classList`.",
+          "Events bubble up from the target to its ancestors, which makes event delegation possible.",
+          "Avoid putting untrusted data in `innerHTML` because it can run injected scripts (XSS). Use `textContent`."
+        ]
+      },
+      {
+        "heading": "TypeScript and Angular",
+        "points": [
+          "TypeScript adds static types to JavaScript and compiles to it: interfaces, type aliases, generics, union types, and `unknown` (safer than `any`).",
+          "Angular builds apps from components with templates, signals for state, services for shared logic, the router for pages and `HttpClient` for API calls."
+        ]
+      }
+    ]
+  }
+]

@@ -1,1 +1,94 @@
-/* You can add global styles to this file, and also import other style files */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #111;
+  background: #fff;
+  line-height: 1.5;
+}
+
+h1 { font-size: 1.9rem; margin: 0 0 1rem; }
+h2 { font-size: 1.25rem; margin: 1.75rem 0 0.5rem; }
+code { background: #f1f1f1; padding: 0.05rem 0.3rem; border-radius: 4px; font-size: 0.95em; }
+pre { background: #f6f6f6; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+.hint { color: #555; }
+.error { color: #b00020; }
+.centered { max-width: 40rem; margin: 5rem auto; padding: 0 1rem; }
+
+button { font: inherit; cursor: pointer; }
+button.primary {
+  background: #111; color: #fff; border: 0; border-radius: 6px;
+  padding: 0.6rem 1.4rem; margin-top: 1rem;
+}
+button.primary:disabled { opacity: 0.5; cursor: default; }
+
+/* shell */
+.layout { display: grid; grid-template-columns: 20rem 1fr; min-height: 100vh; }
+.layout.closed { grid-template-columns: 0 1fr; }
+.side { border-right: 4px solid #000; padding: 4.5rem 0 1rem 4rem; overflow: hidden; }
+.layout.closed .side { display: none; }
+.content { padding: 4.5rem 2rem 3rem; max-width: 60rem; }
+.burger {
+  position: fixed; top: 0.6rem; left: 0.75rem; z-index: 10;
+  width: 2.6rem; height: 2.4rem; background: none; border: 0; padding: 0.3rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.burger span { display: block; height: 4px; background: #000; border-radius: 2px; }
+nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+.nav-link {
+  background: none; border: 0; padding: 0; font-weight: bold; font-size: 1rem;
+  color: #000; text-decoration: none; text-align: left;
+}
+.nav-link:hover, nav a:hover { text-decoration: underline; }
+.topic-list { list-style: none; padding: 0 0 0.5rem 1rem; margin: 0; }
+.topic-list a { color: #000; text-decoration: none; font-size: 0.95rem; }
+nav a.active { text-decoration: underline; }
+
+/* topic page */
+.doc li { margin-bottom: 0.4rem; }
+.quiz-title { border-top: 2px solid #000; padding-top: 1.25rem; margin-top: 2.5rem; }
+.question { border: 1px solid #ccc; border-radius: 6px; margin: 0 0 1rem; padding: 0.75rem 1rem; }
+.question legend { font-weight: bold; padding: 0 0.4rem; white-space: pre-wrap; }
+.option { display: flex; gap: 0.5rem; padding: 0.25rem 0.4rem; border-radius: 4px; white-space: pre-wrap; }
+.option.correct { background: #dff5df; }
+.option.wrong { background: #fbdcdc; }
+.result { border-top: 2px solid #000; margin-top: 1.5rem; padding-top: 0.5rem; }
+
+/* profiles */
+.link-box { border: 1px solid #ccc; border-radius: 6px; padding: 0.5rem 1rem 1rem; margin-bottom: 1.5rem; }
+.link-row { display: flex; gap: 0.5rem; }
+.link-row input { flex: 1; padding: 0.5rem; font: inherit; }
+.link-row button { margin-top: 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
+.card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; padding-bottom: 0.75rem; }
+.card .bar { height: 2.5rem; border-bottom: 1px solid #ccc; }
+.card h3 { margin: 0.6rem 1rem 0; }
+.card p, .card a { margin: 0.2rem 1rem 0; display: block; word-break: break-all; }
+
+/* color picker */
+.picker { width: min(26rem, 92vw); margin: 2.5rem auto; text-align: center; }
+.picker h1 { font-size: 1.5rem; font-weight: normal; }
+.sv {
+  position: relative; height: 15.5rem; border-radius: 8px; touch-action: none; cursor: crosshair;
+  background-image: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
+}
+.thumb {
+  position: absolute; width: 1.3rem; height: 1.3rem; margin: -0.65rem 0 0 -0.65rem;
+  border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px #0004; pointer-events: none;
+}
+.hue {
+  width: 100%; margin: 1.25rem 0 1rem; appearance: none; height: 0.7rem; border-radius: 0.35rem;
+  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+.hue::-webkit-slider-thumb {
+  appearance: none; width: 1.2rem; height: 1.2rem; border-radius: 50%; background: #fff; border: 2px solid #888;
+}
+.hue::-moz-range-thumb { width: 1.2rem; height: 1.2rem; border-radius: 50%; background: #fff; border: 2px solid #888; }
+.hex-row {
+  display: flex; align-items: center; gap: 0.5rem; border: 1px solid #ddd; border-radius: 8px; padding: 0.6rem 0.8rem;
+}
+.swatch { width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 1px solid #ccc; }
+.hash { color: #777; }
+.hex-input { flex: 1; border: 0; font: inherit; font-weight: bold; text-transform: uppercase; outline: none; }

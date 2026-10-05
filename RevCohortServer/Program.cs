@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.TraversePath().Load();
 
@@ -56,7 +57,7 @@ app.MapGet("/login", async (string token, CohortContext db, HttpContext http) =>
 
     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
     await http.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-    return Results.Redirect("/me");
+    return Results.Redirect("/");
 });
 
 app.MapGet("/me", async (ClaimsPrincipal principal, CohortContext db) =>
@@ -67,21 +68,43 @@ app.MapGet("/me", async (ClaimsPrincipal principal, CohortContext db) =>
 
 app.MapPut("/me", async (ProfileUpdate body, ClaimsPrincipal principal, CohortContext db) =>
 {
-    if (!Regex.IsMatch(body.ProfileColor ?? "", "^#[0-9A-Fa-f]{6}$"))
+    if (body.ProfileColor != null && !Regex.IsMatch(body.ProfileColor, "^#[0-9A-Fa-f]{6}$"))
         return Results.BadRequest("ProfileColor must look like #RRGGBB.");
 
-    string link = body.ProfileLink ?? "";
-    if (link != "" && (!Uri.TryCreate(link, UriKind.Absolute, out var uri) || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)))
+    if (body.ProfileLink != null && body.ProfileLink != "" && (!Uri.TryCreate(body.ProfileLink, UriKind.Absolute, out var uri) || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)))
         return Results.BadRequest("ProfileLink must be a valid http(s) URL.");
 
     var user = await db.Users.FindAsync(ulong.Parse(principal.FindFirstValue(ClaimTypes.NameIdentifier)!));
     if (user == null)
         return Results.Unauthorized();
 
-    user.ProfileColor = body.ProfileColor!;
-    user.ProfileLink = link;
+    if (body.ProfileColor != null)
+    {
+        var taken = (await db.Users.Where(u => u.DiscordId != user.DiscordId).Select(u => u.ProfileColor).ToListAsync())
+            .Select(c => c.ToUpper()).ToHashSet();
+        int colorValue = Convert.ToInt32(body.ProfileColor.Substring(1), 16);
+        string candidate = "#" + colorValue.ToString("X6");
+        while (taken.Contains(candidate))
+        {
+            colorValue = (colorValue + 1) % 0x1000000;
+            candidate = "#" + colorValue.ToString("X6");
+        }
+        user.ProfileColor = candidate;
+    }
+    if (body.ProfileLink != null)
+        user.ProfileLink = body.ProfileLink;
+
     await db.SaveChangesAsync();
     return Results.Ok(user);
+}).RequireAuthorization();
+
+app.MapGet("/profiles", async (CohortContext db) =>
+{
+    var profiles = await db.Users
+        .OrderBy(u => u.Username)
+        .Select(u => new { DiscordId = u.DiscordId.ToString(), u.Username, u.Track, u.ProfileColor, u.ProfileLink })
+        .ToListAsync();
+    return Results.Ok(profiles);
 }).RequireAuthorization();
 
 app.MapDelete("/me", async (string confirm, ClaimsPrincipal principal, CohortContext db, HttpContext http) =>
