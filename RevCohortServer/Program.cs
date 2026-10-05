@@ -5,9 +5,10 @@ using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
-DotNetEnv.Env.TraversePath().Load();
+try { DotNetEnv.Env.TraversePath().Load(); } catch (FileNotFoundException) { }
 
 var client = new DiscordSocketClient(new DiscordSocketConfig
 {
@@ -28,9 +29,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Events.OnRedirectToAccessDenied = context => { context.Response.StatusCode = 403; return Task.CompletedTask; };
     });
 builder.Services.AddAuthorization();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -106,6 +116,8 @@ app.MapGet("/profiles", async (CohortContext db) =>
         .ToListAsync();
     return Results.Ok(profiles);
 }).RequireAuthorization();
+
+app.MapFallbackToFile("index.html");
 
 app.MapDelete("/me", async (string confirm, ClaimsPrincipal principal, CohortContext db, HttpContext http) =>
 {
